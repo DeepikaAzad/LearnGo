@@ -1,12 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 
-	"github.com/DeepikaAzad/LearnGo"
+	"github.com/DeepikaAzad/LearnGo/cyoa"
 )
 
 func main() {
@@ -19,6 +18,9 @@ func main() {
 		panic(err)
 	}
 
-	d := json.NewDecoder(f)
-	var story LearnGo.Story
+	story, err := cyoa.JSONStory(f)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", story)
 }
