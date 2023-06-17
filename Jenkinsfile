@@ -1,17 +1,21 @@
 pipeline {
-    agent {
-        go {
-            // Specify the name of the Go installation configured in Global Tool Configuration
-            name 'Go'
-        }
-    }
+    agent any
+    tools { go '1.19' }
     stages {
         stage('Build') {
             steps {
-                // Add your build steps here
-                sh 'go build'
+                echo 'Building..'
             }
         }
-        // Add more stages as needed
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
     }
 }
