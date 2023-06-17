@@ -1,21 +1,43 @@
 pipeline {
     agent any
-
+    tools {
+        go 'go1.20'
+    }
+    environment {
+        GO114MODULE = 'on'
+        CGO_ENABLED = 0 
+        GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
+    }
     stages {
-        stage('Build') {
+        stage("unit-test") {
             steps {
-                echo 'Building..'
+                echo 'UNIT TEST EXECUTION STARTED'
+                sh 'make unit-tests'
             }
         }
-        stage('Test') {
+        stage("functional-test") {
             steps {
-                echo 'Testing..'
+                echo 'FUNCTIONAL TEST EXECUTION STARTED'
+                sh 'make functional-tests'
             }
         }
-        stage('Deploy') {
+        stage("build") {
             steps {
-                echo 'Deploying....'
+                echo 'BUILD EXECUTION STARTED'
+                sh 'go version'
+                sh 'go get ./...'
+                sh 'docker build -t learngo:latest .'
+                sh 'docker run learngo'
             }
         }
+        // stage('deliver') {
+        //     agent any
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+        //         sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
+        //         sh 'docker push shadowshotx/product-go-micro'
+        //         }
+        //     }
+        // }
     }
 }
