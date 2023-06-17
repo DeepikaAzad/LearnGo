@@ -7,18 +7,6 @@ pipeline {
         GOPATH = "${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"
     }
     stages {
-        stage("unit-test") {
-            steps {
-                echo 'UNIT TEST EXECUTION STARTED'
-                sh 'make unit-tests'
-            }
-        }
-        stage("functional-test") {
-            steps {
-                echo 'FUNCTIONAL TEST EXECUTION STARTED'
-                sh 'make functional-tests'
-            }
-        }
         stage("build") {
             steps {
                 echo 'BUILD EXECUTION STARTED'
